@@ -3,15 +3,15 @@
 
 - name: vault | create vault base directory
   ansible.builtin.file:
-    path: /vault
+    path: "{{ vault_working_dir }}"
     state: directory
 
-- name: 
+- name: vault | copy docker-compose template
   ansible.builtin.template:
     src: docker-compose.yml.j2
-    dest: /vault/docker-compose.yml
+    dest: "{{ vault_working_dir }}/docker-compose.yml"
 
-- name: Start Vault service
+- name: vault | run service
   ansible.builtin.command: docker compose up -d
   args:
-    chdir: /vault
+    chdir: "{{ vault_working_dir }}"
