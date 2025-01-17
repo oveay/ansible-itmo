@@ -1,13 +1,13 @@
-version: '3.7'
+version: '3.3'
 services:
     vault:
-        image: "hashicorp/vault:latest"
-        container_name: vault
+        image: "{{ vault_image_name }}"
+        container_name: "{{ vault_container_name }}"
         ports:
-            - "8200:8200"
+            - "{{ vault_host_port }}:8200"
         cap_add:
             - IPC_LOCK
         environment:
-            VAULT_DEV_ROOT_TOKEN_ID: "root"
-            VAULT_ADDR: "http://0.0.0.0:8200"
-        command: "server -dev"
+          VAULT_DEV_ROOT_TOKEN_ID: "root"
+          VAULT_DEV_LISTEN_ADDRESS: "http://0.0.0.0:8200"
+        command: "{{ vault_server_run_command }}"
