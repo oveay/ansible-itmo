@@ -1,0 +1,30 @@
+#SPDX-License-Identifier: MIT-0
+---
+# tasks file for ansible-role-docker
+- name: docker | install requirements
+  ansible.builtin.apt:
+    name:
+      - ca-certificates
+      - curl
+    state: present
+    update_cache: yes
+
+- name: docker | install keyring
+  ansible.builtin.apt_key:
+    url: "{{ docker_gpg_key_url }}"
+    state: present
+
+- name: docker | add repository
+  ansible.builtin.apt_repository:
+    repo: "deb {{ docker_repo_url }} {{ docker_os_version_codename }} stable"
+    state: present
+
+- name: docker | install docker
+  ansible.builtin.apt:
+    name:
+      - docker-ce
+      - docker-ce-cli
+      - containerd.io
+      - docker-buildx-plugin
+      - docker-compose-plugin
+    state: present

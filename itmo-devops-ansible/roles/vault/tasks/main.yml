@@ -1,0 +1,17 @@
+#SPDX-License-Identifier: MIT-0
+---
+
+- name: vault | create vault base directory
+  ansible.builtin.file:
+    path: /vault
+    state: directory
+
+- name: 
+  ansible.builtin.tempfile:
+    src: docker-compose.yml.j2
+    dest: /vault/docker-compose.yml
+
+- name: Start Vault service
+  ansible.builtin.command: docker compose up
+  args:
+    chdir: /vault

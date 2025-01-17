@@ -1,0 +1,9 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for ansible-role-vault
+
+vault_image_name: hashicorp/vault:latest
+vault_container_name: vault
+vault_host_port: 8200
+vault_restart_policy: always
+vault_server_run_command: vault server -dev

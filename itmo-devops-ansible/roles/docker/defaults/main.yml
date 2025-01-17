@@ -1,0 +1,7 @@
+#SPDX-License-Identifier: MIT-0
+---
+# defaults file for ansible-role-docker
+docker_gpg_key_url: https://download.docker.com/linux/ubuntu/gpg
+
+docker_repo_url: https://download.docker.com/linux/ubuntu
+docker_os_version_codename: noble
