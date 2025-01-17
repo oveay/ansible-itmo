@@ -7,11 +7,11 @@
     state: directory
 
 - name: 
-  ansible.builtin.tempfile:
+  ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: /vault/docker-compose.yml
 
 - name: Start Vault service
-  ansible.builtin.command: docker compose up
+  ansible.builtin.command: docker compose up -d
   args:
     chdir: /vault

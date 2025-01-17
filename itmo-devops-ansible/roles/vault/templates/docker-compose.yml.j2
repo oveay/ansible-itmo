@@ -2,14 +2,13 @@ version: '3.3'
 services:
     vault:
         image: "{{ vault_image_name }}"
-        container_name: "{{ vault_container_name }}"
         restart: "{{ vault_restart_policy }}"
+        container_name: "{{ vault_container_name }}"
         ports:
             - "{{ vault_host_port }}:8200"
         cap_add:
             - IPC_LOCK
         environment:
-          - VAULT_ADDR=http://0.0.0.0:8200
-          - VAULT_API_ADDR=http://0.0.0.0:8200
-          - VAULT_ADDRESS=http://0.0.0.0:8200
+          VAULT_DEV_ROOT_TOKEN_ID: "root"
+          VAULT_DEV_LISTEN_ADDRESS: "http://0.0.0.0:8200"
         command: "{{ vault_server_run_command }}"
