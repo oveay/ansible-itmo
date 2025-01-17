@@ -9,7 +9,7 @@
     state: present
     update_cache: yes
 
-- name: docker | install keyring
+- name: docker | add gpg key
   ansible.builtin.apt_key:
     url: "{{ docker_gpg_key_url }}"
     state: present
