@@ -1,0 +1,43 @@
+- name: vault | initialize the vault
+  ansible.builtin.command: docker exec -it {{ vault_container_name }} vault operator init
+  register: init_info
+  environment:
+    VAULT_ADDR: "{{ vault_tcp_address }}"
+
+- name: vault | copy tmp keys file
+  ansible.builtin.copy:
+    content: "{{ init_info.stdout }}"
+    dest: "{{ __vault_tmp_key_storage }}"
+
+- name: vault | copy script file
+  ansible.builtin.copy:
+    src: parse_vault_init_keys.py
+    dest: "{{ vault_working_dir }}/parse_vault_init_keys.py"
+
+- name: vault | parse keys and token values
+  ansible.builtin.command: python3 /vault/parse_vault_init_keys.py {{ __vault_tmp_key_storage }}
+  register: init_info
+  environment:
+    VAULT_ADDR: "{{ vault_tcp_address }}"
+
+- name: vault | convert script out to dict
+  ansible.builtin.set_fact:
+    vault_data: "{{ init_info.stdout | from_json }}"
+
+- name: vault | unseal vault
+  ansible.builtin.shell: |
+    docker exec -it {{ vault_container_name }} vault operator unseal {{ vault_data.unseal_key_1 }}
+    docker exec -it {{ vault_container_name }} vault operator unseal {{ vault_data.unseal_key_2 }}
+    docker exec -it {{ vault_container_name }} vault operator unseal {{ vault_data.unseal_key_3 }}
+  environment:
+    VAULT_ADDR: "{{ vault_tcp_address }}"
+
+- name: vault | make file with token
+  ansible.builtin.copy:
+    content: "Initial Root Token: {{ vault_data.initial_root_token }}"
+    dest: "{{ __vault_final_key_storage }}"
+
+- name: vault | move token file to host machine
+  ansible.builtin.fetch:
+    src: "{{ __vault_final_key_storage }}"
+    dest: "{{ vault_final_token_local_path }}"

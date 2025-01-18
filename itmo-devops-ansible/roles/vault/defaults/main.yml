@@ -10,8 +10,11 @@ vault_restart_policy: always
 
 vault_token_id: dev-only-token
 vault_address: http://0.0.0.0:8200
+vault_tcp_address: 0.0.0.0:8200
 vault_host_port: 8200
 
 vault_backend_file_name: "{{ vault_working_dir }}/file"
 vault_default_lease_ttl: 168h
 vault_max_lease_ttl: 0h
+
+vault_final_token_local_path: /tmp/keyPath

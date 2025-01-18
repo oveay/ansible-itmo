@@ -5,4 +5,3 @@
   ansible.builtin.command: docker compose restart
   args:
     chdir: "{{ vault_working_dir }}"
-  
