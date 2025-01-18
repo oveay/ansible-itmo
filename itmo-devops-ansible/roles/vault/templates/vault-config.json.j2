@@ -1,0 +1,17 @@
+{
+  "listener":  {
+    "tcp":  {
+      "address":  "0.0.0.0:8200",
+      "tls_disable":  "true"
+    }
+  },
+  "backend": {
+    "file": {
+      "path": "{{ vault_backend_file_name }}"
+    }
+  },
+  "default_lease_ttl": "{{ vault_default_lease_ttl }}",
+  "max_lease_ttl": "{{ vault_max_lease_ttl }}",
+  "api_addr": "{{ vault_address }}",
+  "ui": true,
+}

@@ -1,3 +1,8 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # handlers file for ansible-role-vault
+- name: vault | restart docker
+  ansible.builtin.command: docker compose restart
+  args:
+    chdir: "{{ vault_working_dir }}"
+  

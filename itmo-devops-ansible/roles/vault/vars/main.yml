@@ -1,3 +1,4 @@
 #SPDX-License-Identifier: MIT-0
 ---
 # vars file for ansible-role-vault
+__vault_config_name: config.json # only file name, effect only internal logic, should not been changed outside from role

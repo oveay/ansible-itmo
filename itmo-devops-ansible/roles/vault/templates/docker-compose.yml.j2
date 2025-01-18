@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.7'
 services:
     vault:
         image: "{{ vault_image_name }}"
@@ -8,7 +8,10 @@ services:
             - "{{ vault_host_port }}:8200"
         cap_add:
             - IPC_LOCK
+        volumes:
+            - "{{ vault_working_dir }}/{{ __vault_config_name }}:{{ vault_working_dir }}/{{ __vault_config_name }}"
         environment:
-          VAULT_DEV_ROOT_TOKEN_ID: "root"
-          VAULT_ADDR: "{{ vault_address }}"
-        command: "{{ vault_server_run_command }}"
+            - VAULT_ADDR={{ vault_address }}
+            - VAULT_API_ADDR={{ vault_address }}
+            - VAULT_ADDRESS={{ vault_address }}
+        command: server -config={{ vault_working_dir }}/{{ __vault_config_name }}

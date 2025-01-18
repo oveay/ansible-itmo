@@ -10,6 +10,15 @@
   ansible.builtin.template:
     src: docker-compose.yml.j2
     dest: "{{ vault_working_dir }}/docker-compose.yml"
+  notify:
+    vault | restart docker
+
+- name: vault | copy vault config template
+  ansible.builtin.template:
+    src: vault-config.json.j2
+    dest: "{{ vault_working_dir }}/{{ __vault_config_name }}"
+  notify:
+    vault | restart docker
 
 - name: vault | run service
   ansible.builtin.command: docker compose up -d
